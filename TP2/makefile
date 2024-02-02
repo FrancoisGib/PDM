@@ -13,5 +13,10 @@ add:
 	as -a --gstabs -o output/add.o add.s
 	ld -o output/add output/add.o
 
+ex:
+	mkdir -p output
+	as -a --gstabs -o output/str_to_num.o str_to_num.s
+	ld -o output/str_to_num output/str_to_num.o
+
 clean:
 	rm -rf output
