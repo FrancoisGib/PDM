@@ -1,10 +1,6 @@
 .data
 str:
-    .string "52"
-str_to_num:
-    .byte 48
-end:
-    .byte 0
+    .string "82\0"
 res:
     .byte 0
 
@@ -15,13 +11,18 @@ _start:
     movq $res, %r9
 
 convert:
-    sub $end, (%r8)
-    jz done
-    add $end, (%r8)
-    sub $str_to_num, (%r8)
-    add %r8, %r9
+    movq $0, %r11
+    cmp %r11, (%r8)
+    je done
+    sub $48, (%r8)
+    movq (%r8), %r10
+    movq (%r9), %r11
+    imul $10, %r11
+    movq %r11, (%r9)
+    add %r10, (%r9)
     inc %r8
     jmp convert
+
 
 /*
 print_r8:

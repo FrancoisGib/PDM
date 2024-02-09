@@ -1,7 +1,7 @@
 .data
 str:
     .string "ça marche !\n"
-space:
+end:
     .byte '\0'
 res:
     .space 16
@@ -15,7 +15,7 @@ _start:
 inc_r8:
     inc %r11
     inc %r8
-    movq $space, %r10
+    movq $end, %r10
     movq %r8, %r9
     sub %r10, %r9
     jnz inc_r8
