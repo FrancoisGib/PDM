@@ -2,7 +2,7 @@
 N:
     .byte 4
 res:
-    .space 5
+    .space 3
 
 .text
 .globl _start 

@@ -3,28 +3,24 @@ read:
 	as -a --gstabs -o output/read.o read.s
 	ld -o read output/read.o
 
-add:
-	mkdir -p output
-	as -a --gstabs -o output/add.o add.s
-	ld -o add output/add.o
-
-str_to_number:
-	mkdir -p output
-	as -a --gstabs -o output/str_to_num.o str_to_num.s
-	ld -o str_to_num output/str_to_num.o
-
 print_str:
 	mkdir -p output
 	as -a --gstabs -o output/print_str.o print_str.s
 	ld -o print_str output/print_str.o
 
-str_to_number2:
+str_to_number:
 	mkdir -p output
-	as -a --gstabs -o output/str_to_number2.o str_to_number2.s
-	ld -o str_to_number2 output/str_to_number2.o
+	as -a --gstabs -o output/str_to_number.o str_to_number.s
+	ld -o str_to_number output/str_to_number.o
+
+calculator:
+	mkdir -p output
+	as -a --gstabs -o output/calculator.o calculator.s
+	ld -o calculator output/calculator.o
 
 clean:
-	rm read
-	rm str_to_num
-	rm add
+	rm -f read
+	rm -f str_to_number
+	rm -f calculator
+	rm -f print_str
 	rm -rf output
