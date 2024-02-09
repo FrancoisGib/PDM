@@ -1,22 +1,30 @@
 read:
 	mkdir -p output
 	as -a --gstabs -o output/read.o read.s
-	ld -o output/read output/read.o
-
-str_to_number:
-	mkdir -p output
-	as -a --gstabs -o str_to_number.o str_to_number.s
-	ld -o output/str_to_number str_to_number.o
+	ld -o read output/read.o
 
 add:
 	mkdir -p output
 	as -a --gstabs -o output/add.o add.s
-	ld -o output/add output/add.o
+	ld -o add output/add.o
 
-ex:
+str_to_number:
 	mkdir -p output
 	as -a --gstabs -o output/str_to_num.o str_to_num.s
-	ld -o output/str_to_num output/str_to_num.o
+	ld -o str_to_num output/str_to_num.o
+
+print_str:
+	mkdir -p output
+	as -a --gstabs -o output/print_str.o print_str.s
+	ld -o print_str output/print_str.o
+
+str_to_number2:
+	mkdir -p output
+	as -a --gstabs -o output/str_to_number2.o str_to_number2.s
+	ld -o str_to_number2 output/str_to_number2.o
 
 clean:
+	rm read
+	rm str_to_num
+	rm add
 	rm -rf output
