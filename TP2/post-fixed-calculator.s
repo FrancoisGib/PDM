@@ -37,7 +37,7 @@ read:
     inc %r14
     cmpb $10, %r10b
     je init_cpt
-    cmpb $32, %r10b
+    cmpb space, %r10b
     je read
     cmpb str_to_num, %r10b /* le dernier opérateur est 47 en ascii */
     jl do_operation
@@ -45,12 +45,14 @@ read:
     jmp read_number
 
 read_number:
-    cmpb space, %r10b
-    je push
     subq str_to_num, %r10
     imul $10, %r9
     addb %r10b, %r9b
+    movq $0, %r10 /* sans le reset, la multiplication par 10 ne fonctionne pas */
     movb (%r14), %r10b
+    cmpb str_to_num, %r10b /* de base je faisait que pour les espaces mais c'est mieux juste de vérifier que ce n'est pas un chiffre car on peut enlever
+                            maintenant enlever les espaces */
+    jl push
     inc %r14
     jmp read_number
 
