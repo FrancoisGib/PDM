@@ -18,7 +18,14 @@ calculator:
 	as -a --gstabs -o output/calculator.o calculator.s
 	ld -o calculator output/calculator.o
 
+post-fixed-calculator:
+	mkdir -p output
+	as -a --gstabs -o output/post-fixed-calculator.o post-fixed-calculator.s
+	ld -o post-fixed-calculator output/post-fixed-calculator.o
+
+
 clean:
+	rm -f post-fixed-calculator
 	rm -f read
 	rm -f str_to_number
 	rm -f calculator

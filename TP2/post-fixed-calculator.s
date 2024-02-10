@@ -14,10 +14,9 @@ space:
     .byte ' '
 str_to_num:
     .byte 48
-
 .text
 .globl _start 
-_start:
+_start: 
     movq $0, %rax
     movq $0, %rdi
     movq $str, %rsi 
@@ -25,36 +24,43 @@ _start:
     syscall
     movq $str, %r14
     movq $operators, %r13
-    movq (%r14), %r10
+    movq $res, %r11
+    movq $0, %rdx
 
-read_first_number:
-    movq (%r14), %r10
+# cas 1 nombre
+# cas 2 operateur
+# cas 3 fin
+
+read:
+    movq $0, %r10
+    movb (%r14), %r10b
+    inc %r14
+    cmpb $10, %r10b
+    je init_cpt
+    cmpb $32, %r10b
+    je read
+    cmpb str_to_num, %r10b /* le dernier opérateur est 47 en ascii */
+    jl do_operation
+    movq $0, %r9
+    jmp read_number
+
+read_number:
     cmpb space, %r10b
-    je pass_space_before_second_argument
-    imul $10, %r8
+    je push
     subq str_to_num, %r10
-    addb %r10b, %r8b
-    inc %r14
-    jmp read_first_number
-
-pass_space_before_second_argument:
-    inc %r14
-
-read_second_number:
-    movq (%r14), %r10
-    cmpb space, %r10b
-    je pass_space_before_operator
     imul $10, %r9
-    subq str_to_num, %r10
     addb %r10b, %r9b
+    movb (%r14), %r10b
     inc %r14
-    jmp read_second_number
+    jmp read_number
 
-pass_space_before_operator:
-    inc %r14
+push:
+    pushq %r9
+    jmp read
 
-handle_operator:
-    movq (%r14), %r10
+do_operation: /* depile les deux nombres et jump */
+    popq %r9
+    popq %r8
     cmpb (%r13), %r10b
     je add
     cmpb 1(%r13), %r10b
@@ -66,25 +72,30 @@ handle_operator:
 
 add:
     addq %r8, %r9
-    jmp init_cpt
+    jmp push
 
 sub:
-    cmpw %r9w, %r8w
+    cmpq %r8, %r9
     je sub_equals
+    jg sub_negative
     subw %r9w, %r8w /* reste stocké dans r8 et ici on doit inverser les opérandes */
     movw %r8w, %r9w
-    jmp init_cpt
+    jmp push
 
 sub_equals:
-    movq $res, %r9
-    movb $'0', (%r9)
-    movq $1, %r12
-    inc %r9
-    jmp add_space
+    movq $0, %r9
+    jmp push
+
+sub_negative:
+    subw %r8w, %r9w /* reste stocké dans r8 et ici on doit inverser les opérandes */
+    movb $'-', (%r11)
+    inc %r11
+    inc %rdx
+    jmp push
 
 mult:
     imul %r8, %r9
-    jmp init_cpt
+    jmp push
 
 div:
     movq $0, %rdx
@@ -92,12 +103,21 @@ div:
     movq %r9, %rbx
     idiv %ebx /* resultat dans rax */
     movq %rax, %r9
+    jmp push
+
+result_equals_zero:
+    movq $'0', (%r11)
+    inc %r11
+    inc %r13
+    movq %r13, %r12
+    jmp add_space
 
 init_cpt:
-    movq %r9, %rax
+    popq %rax
     movq $0, %r13
-    movq $res, %r9
     movq $buffer, %r15
+    cmpl $0, %eax
+    je result_equals_zero
 
 convert_result_to_string:
     movl $10, %ebx
@@ -114,17 +134,18 @@ convert_result_to_string:
 
 length:
     movq %r13, %r12
+    addq %rdx, %r12
 
 reverse_string:
     dec %r15
     movb (%r15), %r14b
-    movb %r14b, (%r9)
-    inc %r9
+    movb %r14b, (%r11)
+    inc %r11
     dec %r13
     jnz reverse_string
 
 add_space:
-    movq $10, (%r9)
+    movq $10, (%r11)
     inc %r12
 
 print_res:
