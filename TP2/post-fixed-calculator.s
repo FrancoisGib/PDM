@@ -82,7 +82,7 @@ sub:
     jmp push
 
 mult:
-    imul %r8, %r9
+    imulw %r8w, %r9w
     jmp push
 
 div:
