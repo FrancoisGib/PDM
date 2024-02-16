@@ -77,22 +77,8 @@ add:
     jmp push
 
 sub:
-    cmpq %r8, %r9
-    je sub_equals
-    jg sub_negative
     subw %r9w, %r8w /* reste stocké dans r8 et ici on doit inverser les opérandes */
     movw %r8w, %r9w
-    jmp push
-
-sub_equals:
-    movq $0, %r9
-    jmp push
-
-sub_negative:
-    subw %r8w, %r9w /* reste stocké dans r8 et ici on doit inverser les opérandes */
-    movb $'-', (%r11)
-    inc %r11
-    inc %rdx
     jmp push
 
 mult:
@@ -118,8 +104,21 @@ init_cpt:
     popq %rax
     movq $0, %r13
     movq $buffer, %r15
+    cmpq $32767, %rax
+    jg neg
     cmpl $0, %eax
     je result_equals_zero
+    jmp convert_result_to_string
+
+neg:
+    movb $'-', (%r11)
+    movq $1, %r8
+    inc %r11
+    inc %r12
+    movq $65536, %r8
+    subq %rax, %r8 /* reste stocké dans r8 et ici on doit inverser les opérandes */
+    movq %r8, %rax
+    
 
 convert_result_to_string:
     movl $10, %ebx

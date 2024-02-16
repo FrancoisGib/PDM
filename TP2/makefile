@@ -23,7 +23,6 @@ post-fixed-calculator:
 	as -a --gstabs -o output/post-fixed-calculator.o post-fixed-calculator.s
 	ld -o post-fixed-calculator output/post-fixed-calculator.o
 
-
 clean:
 	rm -f post-fixed-calculator
 	rm -f read
