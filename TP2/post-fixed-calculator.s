@@ -33,44 +33,44 @@ addition:
 .globl soustraction
 .type soustraction, @function
 soustraction:
-    push %rbp /* sauvegarde pointeur base */
+    push %rbp
     movq %rsp, %rbp
-    push %rbx /* sauvegarde des registres */
+    push %rbx
     movq 16(%rbp), %r8
     movq 24(%rbp), %r9
-    subq %r8, %r9 /* reste stocké dans r8 et ici on doit inverser les opérandes */
+    subq %r8, %r9
     movq %r9, %rax
-    popq %rbx /* on restaure les registres */
-    movq %rbp, %rsp /* restauration pointeur base */
+    popq %rbx
+    movq %rbp, %rsp
     popq %rbp
     ret
    
 .globl multiplication
 .type multiplication, @function
 multiplication:
-    push %rbp /* sauvegarde pointeur base */
+    push %rbp
     movq %rsp, %rbp
-    push %rbx /* sauvegarde des registres */
+    push %rbx
     movq 16(%rbp), %r8
     movq 24(%rbp), %r9
     imul %r8, %r9
-    popq %rbx /* on restaure les registres */
-    movq %rbp, %rsp /* restauration pointeur base */
+    popq %rbx
+    movq %rbp, %rsp
     popq %rbp
     ret    
 
 .globl division
 .type division, @function
 division:
-    push %rbp /* sauvegarde pointeur base */
+    push %rbp
     movq %rsp, %rbp
-    push %rbx /* sauvegarde des registres */
+    push %rbx
     movq 16(%rbp), %rbx
     movq 24(%rbp), %rax
-    idiv %ebx /* resultat dans rax */
+    idiv %ebx
     movq %rax, %r9
-    popq %rbx /* on restaure les registres */
-    movq %rbp, %rsp /* restauration pointeur base */
+    popq %rbx
+    movq %rbp, %rsp
     popq %rbp
     ret
 
@@ -126,7 +126,7 @@ neg:
     xor %r10, %rax
     jmp init
 
-do_operation: /* depile les deux nombres et jump */
+do_operation: /* depile les deux nombres et jump à l'operation correspondante */
     cmpb (%r13), %r10b
     je add
     cmpb 1(%r13), %r10b
