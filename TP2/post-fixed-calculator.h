@@ -1,0 +1,1 @@
+void post_fixed_calculator();
