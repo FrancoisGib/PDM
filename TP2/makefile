@@ -33,6 +33,11 @@ post-fixed-calculator:
 link:
 	gcc post-fixed-calculator.c post-fixed-calculator.s -no-pie -o post-fixed-calculator
 
+mmencopy:
+	mkdir -p output
+	as -a --gstabs -o output/mmemcopy.o mmemcopy.s
+	ld -o mmemcopy output/mmemcopy.o
+
 clean:
 	rm -f post-fixed-calculator
 	rm -f read
@@ -40,3 +45,4 @@ clean:
 	rm -f calculator
 	rm -f print_str
 	rm -rf output
+	rm -f mmemcopy
