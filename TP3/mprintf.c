@@ -8,6 +8,6 @@
 extern void mprintf(char* motif, ...);
 
 int main() {
-    mprintf("first\n", "second\n", "third\n", "fourth\n", "fifth\n", "sixth");
+    mprintf("args: %d %c %s %h\n", 234, 'c', "string", 0x64);
     return 0;
 }
