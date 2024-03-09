@@ -7,40 +7,26 @@ res:
 mprintf:
     pushq %rbp
     movq %rsp, %rbp
-    pushq %rbx
-    movq 16(%rbp), %rax
-    movq 24(%rbp), %rbx
-    movq $0, %r8
     movq $res, %rdx
+    movq $0, %r8
+
     read:
-        movb (%rax), %cl
-        cmpb $'%', %cl
-        je percent
+        movb (%rdi), %cl
         cmpb $0, %cl
-        je print
+        je deuxieme
         movb %cl, (%rdx)
-        inc %rdx
         inc %r8
-        inc %rax
+        inc %rdi
+        inc %rdx
         jmp read
 
-    percent:
-        inc %rax
-        movb (%rax), %cl
-        cmpb $'s', %cl
-        inc %rax
-        je string
 
-    string:
-        movb (%rbx), %cl
-        inc %rbx
-        cmpb $0, %cl
-        je read
-        inc %r8
-        movb %cl, (%rdx)
-        inc %rdx
-        inc %r8
-        jmp string
+    deuxieme:
+        cmpq $1, %r15
+        je print
+        movq $1, %r15
+        movq %rsi, %rdi
+        jmp read
 
     print:
         movq $1, %rax
@@ -50,7 +36,7 @@ mprintf:
         syscall
 
     done:
-        popq %rbx
+        /*subq %r8, %rbp*/
         movq %rbp, %rsp
         popq %rbp
         ret

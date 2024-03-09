@@ -9,4 +9,4 @@ length:
 	gcc -no-pie -g length.c length.s -o length
 
 clean:
-	rm -f mprintf.o mprintf prog
+	rm -f mprintf.o mprintf prog length

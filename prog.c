@@ -1,12 +1,15 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <stdlib.h>
+#include <string.h>
 
-extern void mprintf(char* motif, char* chaine);
+#define MAX_STR_SIZE 32
+
+extern void mprintf(char* motif, ...);
 
 int main() {
-    char* motif = "fdsfs %s fdsfs";
-    char* src = "okdsqdds";
-    mprintf(motif, src);
+
+    mprintf("dsqd", "\nok");
+
     return 0;
 }
